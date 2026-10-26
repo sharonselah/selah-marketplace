@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/* Design tokens. Components use the semantic names (bg-surface, text-muted, bg-brand…). */
+:root {
+  --bg: #f7f6fb;
+  --surface: #ffffff;
+  --surface-2: #f1eff8;
+  --border: #e4e1ef;
+  --text: #17142a;
+  --muted: #6b6785;
+  --brand: #6d28d9;
+  --brand-strong: #5b21b6;
+  --brand-soft: #ede7fd;
+  --on-brand: #ffffff;
+  --accent: #f59e0b;
+  --good: #047857;
+  --good-soft: #d1fae5;
+  --warn: #b45309;
+  --warn-soft: #fef3c7;
+  --bad: #b91c1c;
+  --bad-soft: #fee2e2;
+  --info: #1d4ed8;
+  --info-soft: #dbeafe;
+  /* Chart series after brand; validated against both surfaces for colour-blind separation. */
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  /* Depth comes from shadows, not borders. Brand-tinted so they never look grey/dirty.
+     card: resting surfaces · raised: hover/selected · float: menus, modals, bottom nav. */
+  --shadow-tint: 40 32 110;
+  --card-shadow: 0 1px 2px rgb(var(--shadow-tint) / 0.04), 0 8px 24px -6px rgb(var(--shadow-tint) / 0.08);
+  --raised-shadow: 0 2px 4px rgb(var(--shadow-tint) / 0.05), 0 14px 32px -8px rgb(var(--shadow-tint) / 0.16);
+  --float-shadow: 0 2px 6px rgb(var(--shadow-tint) / 0.06), 0 16px 40px -8px rgb(var(--shadow-tint) / 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0b16;
+    --surface: #16131f;
+    --surface-2: #1e1a2b;
+    --border: #2b2640;
+    --text: #f2f0fa;
+    --muted: #9c97b5;
+    --brand: #8b5cf6;
+    --brand-strong: #a78bfa;
+    --brand-soft: #2a1f4a;
+    --on-brand: #ffffff;
+    --accent: #fbbf24;
+    --good: #34d399;
+    --good-soft: #0f2e25;
+    --warn: #fbbf24;
+    --warn-soft: #33270b;
+    --bad: #f87171;
+    --bad-soft: #3a1414;
+    --info: #60a5fa;
+    --info-soft: #132544;
+    --chart-2: #d95926;
+    --chart-3: #199e70;
+    --chart-4: #c98500;
+    --shadow-tint: 0 0 0;
+    --card-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -6px rgb(0 0 0 / 0.35);
+    --raised-shadow: 0 2px 4px rgb(0 0 0 / 0.35), 0 14px 32px -8px rgb(0 0 0 / 0.5);
+    --float-shadow: 0 2px 6px rgb(0 0 0 / 0.4), 0 16px 40px -8px rgb(0 0 0 / 0.6);
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-on-brand: var(--on-brand);
+  --color-accent: var(--accent);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-pay-mpesa: var(--pay-mpesa);
+  --color-pay-card: var(--pay-card);
+  --color-pay-bank: var(--pay-bank);
+  --shadow-card: var(--card-shadow);
+  --shadow-raised: var(--raised-shadow);
+  --shadow-float: var(--float-shadow);
+
+  /* Two radii for surfaces; controls (buttons, inputs, chips, badges) are always rounded-full. */
+  --radius-card: 1.25rem;
+  --radius-tile: 1rem;
+
+  /* Type roles. Body is text-sm, meta is text-xs; these cover everything above and the label.
+     Each role carries its weight, so `text-heading` alone is a complete section title. */
+  --text-display: 2.25rem;
+  --text-display--line-height: 1.1;
+  --text-display--font-weight: 700;
+  --text-display--letter-spacing: -0.02em;
+  --text-title: 1.5rem;
+  --text-title--line-height: 1.25;
+  --text-title--font-weight: 600;
+  --text-title--letter-spacing: -0.01em;
+  --text-heading: 1.0625rem;
+  --text-heading--line-height: 1.4;
+  --text-heading--font-weight: 600;
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1.3;
+  --text-label--font-weight: 500;
+  --text-label--letter-spacing: 0.08em;
+
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-montserrat);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Content colour: deterministic gradients for art without a photo. This is where the UI's
+   variety comes from; chrome stays brand-only. */
+.cover-g0 { --g: linear-gradient(135deg, #7c3aed, #db2777); }
+.cover-g1 { --g: linear-gradient(135deg, #0ea5e9, #6366f1); }
+.cover-g2 { --g: linear-gradient(135deg, #f59e0b, #dc2626); }
+.cover-g3 { --g: linear-gradient(135deg, #10b981, #0e7490); }
+.cover-g4 { --g: linear-gradient(135deg, #1e1b4b, #7c3aed); }
+.cover-g5 { --g: linear-gradient(135deg, #be185d, #f97316); }
+.cover-g6 { --g: linear-gradient(135deg, #0f172a, #0891b2); }
+.cover-g7 { --g: linear-gradient(135deg, #65a30d, #ca8a04); }
+[class*='cover-g'] { background: var(--g); }
+/* Orb: the same gradient as a lit sphere, one spot of colour per row (reference: subscription list). */
+.orb { background: radial-gradient(circle at 32% 26%, rgb(255 255 255 / 0.55), transparent 46%), var(--g); }
+
+/* Payment brands keep their real colours: trusted, not decorative. */
+:root {
+  --pay-mpesa: #3aaa35;
+  --pay-card: #1a1f71;
+  --pay-bank: #0f3b6e;
+}
+
+@keyframes progress-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+.animate-progress { animation: progress-indeterminate 1.2s ease-in-out infinite; }
+
+html { scroll-behavior: smooth; }
+
+h1, h2, h3 { font-family: var(--font-display); }
+
+/* One icon voice: thin, even Lucide strokes everywhere (overrides the library's default 2). */
+svg.lucide { stroke-width: 1.75; }
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
